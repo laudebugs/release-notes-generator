@@ -15,7 +15,6 @@ export class TinymceService {
         return {
         plugins: ['ai', 'aidialog', 'aishortcuts', 'lists', 'link', 'image', 'table', 'code', 'help', 'wordcount'],
         ai_request: (request: any, respondWith: any) => {
-            console.log('ai_request', request)
             const chatCompletionParams = generateChatCompletionParams({
                 role: 'user',
                 content: `${request.prompt} ${request.query}`,

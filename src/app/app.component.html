@@ -1,23 +1,43 @@
 <mat-toolbar color="primary">
-    <span>Ascribe: Your Release Notes Generator</span>
+    <div>Ascribe: Your Release Notes Generator</div>
 </mat-toolbar>
 
 <mat-card>
     <div class="container">
         <div class="project">
-            <mat-form-field>
-                <mat-label>Select Open Source Library</mat-label>
-                <mat-select name="openSourceProject" [(ngModel)]="projectSvc.project">
-                    @for (prj of projects; track prj.name) {
-                        <mat-option [value]="prj">{{prj.name}}</mat-option>
-                    }
-                </mat-select>
-            </mat-form-field>
+            <div class="header">
+                <mat-form-field appearance="outline">
+                    <mat-label>Select Project</mat-label>
+                    <mat-select name="openSourceProject" [(ngModel)]="projectSvc.project">
+                        <mat-option [value]="null">--</mat-option>
+                        @for (prj of projects; track prj.name) {
+                            <mat-option [value]="prj">{{prj.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
 
-            <button mat-raised-button color="primary" [disabled]="!projectSvc.project" [loading]="openAISvc.loadingNotes()" (click)="openAISvc.getProjectNotes()">Generate Release Notes</button>
+                <button mat-raised-button color="primary" [disabled]="!projectSvc.project()"
+                    [loading]="openAISvc.loadingNotes()" (click)="openAISvc.getProjectNotes()">{{
+                    openAISvc.loadingNotes()? 'Generating... ': 'Generate Release Notes'
+                    }}
+                </button>
+            </div>
+
+            @if (projectSvc.project()) {
+            <div>
+                <h2>Latest Release Items to generate notes: 👇🏻</h2>
+                <markdown [data]="projectSvc.project() | combineReleaseNotes">
+                </markdown>
+            </div>
+            }
         </div>
-        <editor [apiKey]="env.TINY_MCE_API_KEY"  [init]="tinyMCESvc.initializationOptions()"></editor>
+        <editor [apiKey]="env.TINY_MCE_API_KEY" [init]="tinyMCESvc.initializationOptions()"></editor>
     </div>
 </mat-card>
 
+<div class="footer">
+    <a href="https://github.com/laudebugs/release-notes-generator">
+        <mat-icon svgIcon="github"></mat-icon>
+    </a>
+</div>
 <router-outlet></router-outlet>

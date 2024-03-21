@@ -1,5 +1,10 @@
 import { TProject } from "../models/project";
 
+/**
+ * A list of projects to generate release notes for
+ * These are hardcoded for now, but in the future, they will be fetched from a backend service
+ * or read from the github releases API
+ */
 export const projects: TProject[] = [
 {
     name: 'Angular',

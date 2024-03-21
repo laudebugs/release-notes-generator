@@ -24,7 +24,7 @@ export class OpenAIService {
     loadingNotes = signal<boolean>(false)
     getProjectNotes() {
         this.loadingNotes.set(true)
-        const request = generateChatCompletionParams(generateUserMessage(this.projectSvc._project().releases.at(0)))
+        const request = generateChatCompletionParams(generateUserMessage(this.projectSvc.project().releases.at(0)))
         return this.getChatCompletion(request)
         .pipe(
             map((response) => {
