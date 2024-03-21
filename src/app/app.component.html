@@ -7,14 +7,16 @@
         <div class="project">
             <mat-form-field>
                 <mat-label>Select Open Source Library</mat-label>
-                <mat-select>
-                    @for (prj of projects; track project.name) {
-                        <mat-option [value]="prj" (ngModelChange)="project = ($event)">{{prj.name}}</mat-option>
+                <mat-select name="openSourceProject" [(ngModel)]="projectSvc.project">
+                    @for (prj of projects; track prj.name) {
+                        <mat-option [value]="prj">{{prj.name}}</mat-option>
                     }
                 </mat-select>
             </mat-form-field>
+
+            <button mat-raised-button color="primary" [disabled]="!projectSvc.project" [loading]="openAISvc.loadingNotes()" (click)="openAISvc.getProjectNotes()">Generate Release Notes</button>
         </div>
-        <editor [apiKey]="env.TINY_MCE_API_KEY" [init]="init"></editor>
+        <editor [apiKey]="env.TINY_MCE_API_KEY"  [init]="tinyMCESvc.initializationOptions()"></editor>
     </div>
 </mat-card>
 

@@ -1,22 +1,32 @@
-import { Injectable, inject, signal } from '@angular/core'
-import { firstValueFrom } from 'rxjs'
-import { RawEditorOptions } from 'tinymce'
-import { generateChatCompletionParams } from '../core/helpers'
+import { Injectable, computed, inject } from '@angular/core'
+import { firstValueFrom, take } from 'rxjs'
 import { OpenAIService } from './open-ai.service'
-import { TProject } from '../models/project'
+import { ProjectService } from './project.service'
+import { generateChatCompletionParams } from '../core/helpers'
 
 @Injectable({
     providedIn: 'root',
 })
 export class TinymceService {
     #openAI = inject(OpenAIService)
+    projectService = inject(ProjectService)
 
-    initializationOptions: RawEditorOptions = {
+    initializationOptions = computed(() => {
+        return {
         plugins: ['ai', 'aidialog', 'aishortcuts', 'lists', 'link', 'image', 'table', 'code', 'help', 'wordcount'],
         ai_request: (request: any, respondWith: any) => {
-            respondWith.string((signal: any) => firstValueFrom(
-                this.#openAI.getProjectNotes()
-            ))
+            console.log('ai_request', request)
+            const chatCompletionParams = generateChatCompletionParams({
+                role: 'user',
+                content: `${request.prompt} ${request.query}`,
+            },
+            {
+                role: 'system',
+                content: `${request.system.join('\n')}`
+            }
+            )
+            respondWith.string((signal: any) => firstValueFrom(this.#openAI.getChatCompletion(chatCompletionParams)))
         },
     }
+})
 }

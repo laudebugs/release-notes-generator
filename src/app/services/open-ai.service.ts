@@ -1,9 +1,9 @@
-import { Injectable, inject } from "@angular/core";
+import { Injectable, inject, signal } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, take } from 'rxjs/operators';
 import { OpenAI } from 'openai';
 import { env } from "../../env";
-import { generateChatCompletionParams } from "../core/helpers";
+import { combineReleaseNotes, generateChatCompletionParams, generateUserMessage } from "../core/helpers";
 import { ProjectService } from "./project.service";
 
 @Injectable({
@@ -18,14 +18,31 @@ export class OpenAIService {
     #httpClient = inject(HttpClient)
 
     projectSvc = inject(ProjectService)
+
+    projectNotes = signal<string>('')
+
+    loadingNotes = signal<boolean>(false)
+    getProjectNotes() {
+        this.loadingNotes.set(true)
+        const request = generateChatCompletionParams(generateUserMessage(this.projectSvc._project().releases.at(0)))
+        return this.getChatCompletion(request)
+        .pipe(
+            map((response) => {
+                this.loadingNotes.set(false)
+                this.projectNotes.set(response)
+                return response
+            }),
+            take(1)
+        )
+        .subscribe()
+    }
     /**
      * Generates a chat completion request for the OpenAI Chat Completions API
      * 
      * @param request The request to send to the OpenAI Chat Completions API
      * @returns A promise that resolves to the chat completions
      */
-    getProjectNotes() {
-        const request = generateChatCompletionParams(this.projectSvc._project().releases.at(0))
+    getChatCompletion(request: OpenAI.Chat.ChatCompletionCreateParams) {
         return this.#httpClient.post<Awaited<OpenAI.Chat.ChatCompletion>>(this.#baseUrl, request, {
             headers: {
                 'Content-Type': 'application/json',

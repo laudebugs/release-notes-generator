@@ -4,10 +4,10 @@ import { TRelease } from '../models/project'
 /**
  * The System Message to Use
  */
-export const systemMessage: OpenAI.Chat.ChatCompletionMessageParam = {
+export const defaultSystemMessage: OpenAI.Chat.ChatCompletionMessageParam = {
     role: 'system',
     content:
-        'You are a technical writer who writes release notes for a popular software product. Your work involves getting releases from github, including the features added, issues fixed and summarizing them in two formats: A Release Notes for the release and a blog post format.',
+        'You are a technical writer who writes release notes for a popular software product. Your work involves getting releases from github, including the features added, issues fixed and summarizing them in two formats: A Release Notes for the release and a blog post format. Format Correctly with Line Breaks and Bullet Points. The Response should be in HTML format.',
 }
 
 /**
@@ -27,12 +27,12 @@ ${combineReleaseNotes(release)}
  * @param releasedItems The items that were released
  * @returns The chat completion parameters to send to the OpenAI Chat Completions API
  */
-export const generateChatCompletionParams = (release?: TRelease): OpenAI.Chat.ChatCompletionCreateParams => {
+export const generateChatCompletionParams = (userMessage: OpenAI.Chat.ChatCompletionMessageParam, systemMessage: OpenAI.Chat.ChatCompletionMessageParam = defaultSystemMessage): OpenAI.Chat.ChatCompletionCreateParams => {
     return {
         model: 'gpt-3.5-turbo',
         temperature: 0.7,
         max_tokens: 800,
-        messages: [systemMessage, generateUserMessage(release)],
+        messages: [defaultSystemMessage, userMessage],
     }
 }
 
