@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from "@angular/core";
+import { TProject } from "../../models/project";
 import { combineReleaseNotes } from "../helpers";
-import { TProject, TRelease } from "../../models/project";
 
 @Pipe({
     standalone: true,

@@ -16,10 +16,14 @@
                     </mat-select>
                 </mat-form-field>
 
-                <button mat-raised-button color="primary" [disabled]="!projectSvc.project()"
-                    [loading]="openAISvc.loadingNotes()" (click)="openAISvc.getProjectNotes()">{{
-                    openAISvc.loadingNotes()? 'Generating... ': 'Generate Release Notes'
-                    }}
+                <button 
+                    mat-raised-button 
+                    color="primary" 
+                    [disabled]="!projectSvc.project()"
+                    [loading]="openAISvc.loadingNotes()" 
+                    (click)="openAISvc.getProjectNotes()"
+                >
+                    {{ openAISvc.loadingNotes()? 'Generating... ': 'Generate Release Notes' }}
                 </button>
             </div>
 
@@ -45,4 +49,3 @@
         <mat-icon svgIcon="github"></mat-icon>
     </a>
 </div>
-<router-outlet></router-outlet>
