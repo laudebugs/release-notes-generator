@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from "@angular/core";
+import { Injectable, signal } from "@angular/core";
 import { TProject } from "../models/project";
 
 @Injectable({

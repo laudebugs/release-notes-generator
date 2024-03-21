@@ -43,6 +43,9 @@ dependencies:
   ngx-markdown:
     specifier: ^17.1.1
     version: 17.1.1(@angular/common@17.2.0)(@angular/core@17.2.0)(@angular/platform-browser@17.2.0)(marked@9.1.6)(rxjs@7.8.1)(zone.js@0.14.3)
+  ngx-skeleton-loader:
+    specifier: ^9.0.0
+    version: 9.0.0(@angular/common@17.2.0)(@angular/core@17.2.0)
   openai:
     specifier: ^4.29.2
     version: 4.29.2
@@ -10658,6 +10661,17 @@ packages:
       prismjs: 1.29.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /ngx-skeleton-loader@9.0.0(@angular/common@17.2.0)(@angular/core@17.2.0):
+    resolution: {integrity: sha512-aO4/V6oGdZGNcTjasTg/fwzJJYl/ZmNKgCukOEQdUK3GSFOZtB/3GGULMJuZ939hk3Hzqh1OBiLfIM1SqTfhqg==}
+    peerDependencies:
+      '@angular/common': '>=16.0.0'
+      '@angular/core': '>=16.0.0'
+    dependencies:
+      '@angular/common': 17.2.0(@angular/core@17.2.0)(rxjs@7.8.1)
+      '@angular/core': 17.2.0(rxjs@7.8.1)(zone.js@0.14.3)
+      tslib: 2.6.2
     dev: false
 
   /nice-napi@1.0.2:

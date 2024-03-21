@@ -6,7 +6,7 @@
     <div class="container">
         <div class="project">
             <div class="header">
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" floatLabel="always">
                     <mat-label>Select Project</mat-label>
                     <mat-select name="openSourceProject" [(ngModel)]="projectSvc.project">
                         <mat-option [value]="null">--</mat-option>
@@ -24,11 +24,16 @@
             </div>
 
             @if (projectSvc.project()) {
-            <div>
-                <h2>Latest Release Items to generate notes: 👇🏻</h2>
-                <markdown [data]="projectSvc.project() | combineReleaseNotes">
-                </markdown>
-            </div>
+                <div>
+                    <h2>Latest Release Items to generate notes: 👇🏻</h2>
+                    <markdown [data]="projectSvc.project() | combineReleaseNotes">
+                    </markdown>
+                </div>
+            }
+            @else {
+                <span style="width: calc(100% - 2em); padding: 2em;">
+                    <ngx-skeleton-loader count="5" [theme]="{'height.px': 25}" appearance="line" [animation]="false"/>
+                </span>
             }
         </div>
         <editor [apiKey]="env.TINY_MCE_API_KEY" [init]="tinyMCESvc.initializationOptions()"></editor>

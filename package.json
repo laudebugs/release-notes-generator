@@ -23,6 +23,7 @@
     "@nx/angular": "18.1.2",
     "@tinymce/tinymce-angular": "^7.0.0",
     "ngx-markdown": "^17.1.1",
+    "ngx-skeleton-loader": "^9.0.0",
     "openai": "^4.29.2",
     "rxjs": "~7.8.0",
     "tinymce": "^6.8.3",

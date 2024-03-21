@@ -1,8 +1,8 @@
 import { Injectable, computed, inject } from '@angular/core'
-import { firstValueFrom, take } from 'rxjs'
+import { firstValueFrom } from 'rxjs'
+import { generateChatCompletionParams } from '../core/helpers'
 import { OpenAIService } from './open-ai.service'
 import { ProjectService } from './project.service'
-import { generateChatCompletionParams } from '../core/helpers'
 
 @Injectable({
     providedIn: 'root',
@@ -13,19 +13,20 @@ export class TinymceService {
 
     initializationOptions = computed(() => {
         return {
-        plugins: ['ai', 'aidialog', 'aishortcuts', 'lists', 'link', 'image', 'table', 'code', 'help', 'wordcount'],
-        ai_request: (request: any, respondWith: any) => {
-            const chatCompletionParams = generateChatCompletionParams({
-                role: 'user',
-                content: `${request.prompt} ${request.query}`,
+            plugins: ['ai', 'aidialog', 'aishortcuts', 'lists', 'link', 'image', 'table', 'code', 'help', 'wordcount'],
+            ai_request: (request: any, respondWith: any) => {
+                const chatCompletionParams = generateChatCompletionParams(
+                    {
+                        role: 'user',
+                        content: `${request.prompt} ${request.query}`,
+                    },
+                    {
+                        role: 'system',
+                        content: `${request.system.join('\n')}`,
+                    }
+                )
+                respondWith.string((signal: any) => firstValueFrom(this.#openAI.getChatCompletion(chatCompletionParams)))
             },
-            {
-                role: 'system',
-                content: `${request.system.join('\n')}`
-            }
-            )
-            respondWith.string((signal: any) => firstValueFrom(this.#openAI.getChatCompletion(chatCompletionParams)))
-        },
-    }
-})
+        }
+    })
 }

@@ -20,6 +20,7 @@ import { TinymceService } from './services/tinymce.service'
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon'
 import { DomSanitizer } from '@angular/platform-browser'
 import { icons } from './core/constants'
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
     standalone: true,
@@ -37,7 +38,8 @@ import { icons } from './core/constants'
         MatButtonLoading,
         CombineReleaseNotesPipe,
         MarkdownComponent,
-        MatIconModule
+        MatIconModule,
+        NgxSkeletonLoaderModule
     ],
     selector: 'app-root',
     templateUrl: './app.component.html',

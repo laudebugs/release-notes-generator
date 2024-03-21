@@ -1,9 +1,9 @@
-import { Injectable, inject, signal } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, take } from 'rxjs/operators';
+import { Injectable, inject, signal } from "@angular/core";
 import { OpenAI } from 'openai';
+import { catchError, map, take } from 'rxjs/operators';
 import { env } from "../../env";
-import { combineReleaseNotes, generateChatCompletionParams, generateUserMessage } from "../core/helpers";
+import { generateChatCompletionParams, generateUserMessage } from "../core/helpers";
 import { ProjectService } from "./project.service";
 
 @Injectable({
@@ -22,6 +22,7 @@ export class OpenAIService {
     projectNotes = signal<string>('')
 
     loadingNotes = signal<boolean>(false)
+    
     getProjectNotes() {
         this.loadingNotes.set(true)
         const request = generateChatCompletionParams(generateUserMessage(this.projectSvc.project().releases.at(0)))
