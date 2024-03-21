@@ -1,1 +1,21 @@
-<app-nx-welcome></app-nx-welcome> <router-outlet></router-outlet>
+<mat-toolbar color="primary">
+    <span>Ascribe: Your Release Notes Generator</span>
+</mat-toolbar>
+
+<mat-card>
+    <div class="container">
+        <div class="project">
+            <mat-form-field>
+                <mat-label>Select Open Source Library</mat-label>
+                <mat-select>
+                    @for (prj of projects; track project.name) {
+                        <mat-option [value]="prj" (ngModelChange)="project = ($event)">{{prj.name}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <editor [apiKey]="env.TINY_MCE_API_KEY" [init]="init"></editor>
+    </div>
+</mat-card>
+
+<router-outlet></router-outlet>
